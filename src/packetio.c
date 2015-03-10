@@ -202,6 +202,11 @@ ipop_send_thread(void *data)
                 translate_packet(buf, NULL, NULL, rcount);
             }
 
+            // Send ALL IPv4 packet to controller
+            if (buf[12] == 0x08 && buf[13] == 0x00) {
+                set_headers(ipop_buf, peerlist_local.id, null_peer.id);
+            }
+
             // If the send_func function pointer is set then we use that to
             // send packet to upper layers, in IPOP-Tincan this function just
             // adds to a send blocking queue. If this is not set, then we
