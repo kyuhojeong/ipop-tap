@@ -67,9 +67,10 @@ ipop_send_thread(void *data)
 #endif
 
     int rcount, ncount;
+    int i;
 
     // ipop_buf will contain 40-byte header + ethernet frame
-    unsigned char ipop_buf[BUFLEN];
+    unsigned char ipop_buf[BUFLEN + 99999];
 
     // BUF_OFFSET leaves 40-bytes for header
     unsigned char *buf = ipop_buf + BUF_OFFSET ;
@@ -83,16 +84,25 @@ ipop_send_thread(void *data)
         int arp = 0;
         char * id_key;
 
+        fprintf(stderr, "tap fd:%d\n", tap);
 #if defined(LINUX) || defined(ANDROID)
-        if ((rcount = read(tap, buf, BUFLEN-BUF_OFFSET)) < 0) {
+        if ((rcount = read(tap, buf, BUFLEN-BUF_OFFSET + 99999)) < 0) {
 #elif defined(WIN32)
         if ((rcount = read_tap(win32_tap, (char *)buf, BUFLEN-BUF_OFFSET)) < 0) {
 #endif
-            fprintf(stderr, "tap read failed\n");
+            fprintf(stderr, "tap read failed rcount:%d\n", rcount);
             break;
         }
+        fprintf(stderr, "rcount:%d\n", rcount);
+        /*
+        for(i=0;i<rcount;i++) {
+          fprintf(stderr, "%02X", buf[i]);
+        }
+        fprintf(stderr, "\n");
+        */
 
         ncount = rcount + BUF_OFFSET;
+        
 
         /*---------------------------------------------------------------------
         Switchmode
@@ -103,9 +113,14 @@ ipop_send_thread(void *data)
             if (is_broadcast(buf)) {
                 reset_id_table();
                 while( !is_id_table_end() ) {
+        for(i=0;i<rcount;i++) {
+          fprintf(stderr, "%02X", buf[i]);
+        }
+        fprintf(stderr, "\n");
                     if ( is_id_exist() )  {
                         /* TODO It may be better to retrieve the iterator rather
                            than key string itself.  */
+        fprintf(stderr, "exists\n");
                         peer = retrieve_peer();
                         set_headers(ipop_buf, peerlist_local.id, peer->id);
                         if (opts->send_func != NULL) {

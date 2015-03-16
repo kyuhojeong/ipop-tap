@@ -41,6 +41,7 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <net/if.h>
+#include <linux/if_packet.h>
 #include <linux/if_tun.h>
 #include <net/route.h>
 #include <arpa/inet.h>
@@ -128,6 +129,42 @@ tap_open(const char *device, char *mac)
 
     memcpy(mac, ifr.ifr_hwaddr.sa_data, 6); // ifr_hwaddr is a sockaddr struct
     return fd;
+}
+
+int
+eth_open(char *mac)
+{
+  int ret;
+  int i;
+  int n;
+  char if_name[10] = "eth0";
+  unsigned char buf[8*1024];
+  struct ifreq ifr;
+  struct sockaddr_ll addr;
+ // fd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+  fd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_IP));
+  //fd = socket(AF_INET, SOCK_RAW, htons(ETH_P_ALL));
+  strncpy(ifr.ifr_name, if_name, IFNAMSIZ);
+  printf("file descriptor:%d\n", fd);
+  printf("if_name:%s\n", if_name);
+  printf("ifr.ifr_name:%s\n", ifr.ifr_name);
+  printf("ifr.ifr_ifindex:%d\n", ifr.ifr_ifindex);
+  ioctl(fd, SIOCGIFINDEX, &ifr);
+  printf("ifr.ifr_ifindex:%d\n", ifr.ifr_ifindex);
+  memset(&addr, 0, sizeof(addr));
+  addr.sll_family = PF_PACKET;
+  //addr.sll_family = AF_INET;
+  addr.sll_protocol = 0;
+  addr.sll_ifindex = ifr.ifr_ifindex;
+  printf("addr.sll_addr:");
+  for(i=0;i<8;i++) {
+    printf("%x ",addr.sll_addr[i]);
+  }
+  printf("\n");
+  //ret = bind(fd, (struct sockaddr*) &addr, sizeof(addr));
+  memcpy(mac, ifr.ifr_hwaddr.sa_data, 6); // ifr_hwaddr is a sockaddr struct
+  return fd;
+
 }
 
 /**
