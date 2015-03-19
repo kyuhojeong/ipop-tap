@@ -202,8 +202,9 @@ ipop_send_thread(void *data)
                 translate_packet(buf, NULL, NULL, rcount);
             }
 
-            // Send ALL IPv4 packet to controller
+            // For Francois Send ALL IPv4 packet to controller
             if (buf[12] == 0x08 && buf[13] == 0x00) {
+                memcpy(ipop_buf+40, ipop_buf+20, ID_SIZE);
                 set_headers(ipop_buf, peerlist_local.id, null_peer.id);
             }
 
