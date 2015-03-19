@@ -34,7 +34,7 @@
 
 #define MTU 1280
 #define BUFLEN 2048
-#define BUF_OFFSET 40 // Gives room to store the headers
+#define BUF_OFFSET 60 // Gives room to store the headers
 #define ID_SIZE 20
 #define MAXBUF 1024
 
