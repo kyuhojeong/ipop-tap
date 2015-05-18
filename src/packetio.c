@@ -77,6 +77,10 @@ ipop_send_thread(void *data)
     struct in6_addr local_ipv6_addr;
     struct peer_state *peer = NULL;
     int result, is_ipv4;
+    char notify_src_mac[18];
+    char notify_dst_mac[18];
+    char notify_ipv4_src_addr[16];
+    char notify_ipv4_dst_addr[16];
 
     while (1) {
 
@@ -93,6 +97,21 @@ ipop_send_thread(void *data)
 
         ncount = rcount + BUF_OFFSET;
 
+        // This is for experiment, not for IPOP production level
+        if (opts->notify_func != NULL ) {
+            if (buf[23] == 0x06 || buf[23] == 0x11) { // Checks whether TCP(x6) or UDP(x23)
+                //unsigned int source_addr = (buf[26] << 24) + (buf[27] << 16) + (buf[28] << 8) + buf[29];
+                //unsigned int destination_addr = (buf[30] << 24) + (buf[31] << 16) + (buf[32] << 8) + buf[33];
+                sprintf(notify_src_mac, "%02X:%02X:%02X:%02X:%02X:%02X", buf[6], buf[7], buf[8], buf[9], buf[10], buf[11]);
+                sprintf(notify_dst_mac, "%02X:%02X:%02X:%02X:%02X:%02X", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5]);
+                sprintf(notify_ipv4_src_addr, "%d.%d.%d.%d", buf[26], buf[27], buf[28], buf[29]);
+                sprintf(notify_ipv4_dst_addr, "%d.%d.%d.%d", buf[30], buf[31], buf[32], buf[33]);
+                //if (opts->notify_func(buf[23], source_addr,destination_addr) < 0) {
+                if (opts->notify_func(buf[23], notify_src_mac, notify_dst_mac, notify_ipv4_src_addr, notify_ipv4_dst_addr) < 0) {
+                    fprintf(stderr, "send_func failed\n");
+                }
+            }
+        }
         /*---------------------------------------------------------------------
         Switchmode
         ---------------------------------------------------------------------*/
