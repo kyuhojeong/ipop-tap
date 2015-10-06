@@ -109,6 +109,11 @@ void retrieve_id(const char ** key);
 void iterate_id_table();
 int mac_add(const unsigned char * ipop_buf, int mac_offset);
 
+int arp_sha_mac_add(const unsigned char * ipop_buf);
+int source_mac_add(const unsigned char * ipop_buf);
+
+
+
 #if defined(LINUX) || defined(ANDROID)
 int override_base_ipv4_addr_p(const char *ipv4);
 int set_subnet_mask(unsigned int mask_len, unsigned int router_mask_len);
