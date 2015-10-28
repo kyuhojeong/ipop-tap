@@ -112,6 +112,7 @@ ipop_send_thread(void *data)
             /* If the frame is broadcast message, it sends the frame to
                every TinCan links as physical switch does */
             if (is_broadcast(buf)) {
+                fprintf(stderr, "send to all link\n");
                 reset_id_table();
                 while( !is_id_table_end() ) {
                     if ( is_id_exist() )  {
@@ -354,6 +355,7 @@ ipop_recv_thread(void *data)
             opts->switchmode == 1) {
             /* L2 Broadcast is forwarded from TinCan links. Add source mac to
                the table  */
+            fprintf(stderr, "l2 broadcast has arrived\n");
             source_mac_add((const unsigned char *) &ipop_buf);
         }
 

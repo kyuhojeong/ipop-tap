@@ -327,6 +327,7 @@ peerlist_add_by_uid(const char *id)
         kh_del(pmap, id_table, k);
     }
     kh_value(id_table, k) = peer;
+    fprintf(stderr, "associated peer with uid:%s\n", id_key); return -1;
     return 0;
 }
 
@@ -378,7 +379,8 @@ mac_add(const unsigned char * ipop_buf, int mac_offset)
     struct peer_state *peer = NULL;
     peerlist_get_by_ids(id_key, &peer);
     if (peer == NULL) {
-        fprintf(stderr, "Unable to find the peer with given key.\n"); return -1;
+        fprintf(stderr, "Unable to find the peer with given key. key:%s\n", id_key); 
+        return -1;
     }
     int i;
     long long key = 0;
