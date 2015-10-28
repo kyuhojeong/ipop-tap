@@ -260,7 +260,7 @@ create_arp_response(unsigned char *buf)
 int
 create_arp_response_sw(unsigned char *buf, unsigned char *mac, unsigned char *my_ip4)
 {
-    memcpy(buf + 32, buf, 6);
+    memcpy(buf + 32, buf+6, 6);
     memcpy(buf + 38, buf + 28, 4);
     memcpy(buf, buf + 6, 6);
     memcpy(buf + 6, mac, 6);
@@ -294,4 +294,11 @@ is_my_ip4(const unsigned char *buf, const unsigned char *my_ip4)
 {
   return buf[38] == my_ip4[0] && buf[39] == my_ip4[1] &&
          buf[40] == my_ip4[2] && buf[41] == my_ip4[3];
+}
+
+int
+is_icc(const unsigned char *buf)
+{
+  return buf[40] == 0x00 && buf[41] == 0x69 && buf[42] == 0x70 &&
+         buf[43] == 0x6f && buf[44] == 0x70;
 }
