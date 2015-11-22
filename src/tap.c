@@ -70,6 +70,8 @@ static int ipv6_configuration_socket = -1;
 // open_tap and use it multiple times throughout (see also: 'man netdevice')
 static int fd = -1; // The file descriptor used by the current TAP device
 
+int internal_mtu = 0;
+
 // define the path of the tun device (platform specific)
 #if defined(ANDROID)
 #define TUN_PATH "/dev/tun"

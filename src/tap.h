@@ -40,7 +40,7 @@ int tap_unset_noarp_flags();
 int tap_set_up();
 int tap_set_down();
 int tap_set_mtu(int mtu);
-int tap_set_internal_mtu(int internal_mtu);
+int tap_set_internal_mtu(int internal_mtu_);
 int tap_set_ipv4_addr(const char *presentation, unsigned int prefix_len, char *my_ip4);
 int tap_set_ipv6_addr(const char *presentation, unsigned int prefix_len);
 int tap_set_ipv4_route(const char *presentation, unsigned short prefix_len,
@@ -52,11 +52,12 @@ int tap_set_ipv4_proc_option(const char *option, const char *value);
 int tap_set_ipv6_proc_option(const char *option, const char *value);
 void tap_close();
 
-static int internal_mtu;
 
 #ifdef __cplusplus
 }
 #endif
+
+extern int internal_mtu;
 
 #endif
 

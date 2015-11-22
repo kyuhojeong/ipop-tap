@@ -314,7 +314,7 @@ is_icc(const unsigned char *buf)
 int
 is_ip4(const unsigned char *buf)
 {
-  return buf[13] == 0x08 && buf[14] == 0x00;
+  return buf[12] == 0x08 && buf[13] == 0x00;
 }
 
 int
