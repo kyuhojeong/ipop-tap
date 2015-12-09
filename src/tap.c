@@ -70,6 +70,8 @@ static int ipv6_configuration_socket = -1;
 // open_tap and use it multiple times throughout (see also: 'man netdevice')
 static int fd = -1; // The file descriptor used by the current TAP device
 
+int internal_mtu = 0;
+
 // define the path of the tun device (platform specific)
 #if defined(ANDROID)
 #define TUN_PATH "/dev/tun"
@@ -209,9 +211,16 @@ tap_set_mtu(int mtu)
 {
     ifr.ifr_mtu = mtu;
     if (ioctl(ipv6_configuration_socket, SIOCSIFMTU, &ifr) < 0) {
-        fprintf(stderr, "Set MTU failed\n");
+        fprintf(stderr, "Set MTU failed(Tried mtu size:%d)\n", mtu);
         tap_close(); return -1;
     }
+    return 0;
+}
+
+int
+tap_set_internal_mtu(int imtu)
+{
+    internal_mtu = imtu;
     return 0;
 }
 
