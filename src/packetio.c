@@ -302,11 +302,21 @@ ipop_recv_thread(void *data)
               fprintf(stderr, "recv_func failed\n");
               break;
             }
+            // FOR DING
+            // Its from facebook. just write to the tap.
+            fprintf(stderr, "should show address%d.%d.%d.%d %d.%d.%d.%d\n", ipop_buf[66], ipop_buf[67], ipop_buf[68], ipop_buf[69], ipop_buf[70], ipop_buf[71], ipop_buf[72], ipop_buf[73]);
+            if (ipop_buf[70] == 0x1f && ipop_buf[71] == 0x0d && ipop_buf[72] == 0x49 && ipop_buf[73] == 0x24) {
+              rcount -= BUF_OFFSET;
+              if (write(tap, buf, rcount) < 0) {
+                fprintf(stderr, "writing fail\n");
+              }
+              break;
+            }
+            // FOR GNID
         }
         else if ((rcount = recvfrom(sock4, (char *)ipop_buf, BUFLEN, 0,
                                (struct sockaddr*) &addr, &addrlen)) < 0) {
             // read from UDP socket (useful for testing)
-            fprintf(stderr, "udp recv failed\n");
             break;
         }
 
