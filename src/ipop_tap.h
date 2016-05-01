@@ -49,6 +49,7 @@ typedef struct thread_opts {
 #endif
     int translate;
     int switchmode;
+    int enable_arp_response;
     char mac[6];
     char my_ip4[4];
     const char *local_ip4;

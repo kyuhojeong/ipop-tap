@@ -346,8 +346,10 @@ ipop_recv_thread(void *data)
             memcpy(ipop_buf, ipop_buf+ID_SIZE, ID_SIZE);
             memcpy(ipop_buf + ID_SIZE, temp, ID_SIZE);
 
-            create_arp_response_sw(buf, (unsigned char *) opts->mac,
+            if (opts->enable_arp_response) {
+              create_arp_response_sw(buf, (unsigned char *) opts->mac,
                                    (unsigned char *) opts->my_ip4);
+            }
 
             if (opts->send_func != NULL) {
                 if (opts->send_func((const char*)ipop_buf,
