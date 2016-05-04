@@ -305,12 +305,15 @@ ipop_recv_thread(void *data)
             // FOR DING
             // Its from facebook. just write to the tap.
             fprintf(stderr, "should show address%d.%d.%d.%d %d.%d.%d.%d\n", ipop_buf[66], ipop_buf[67], ipop_buf[68], ipop_buf[69], ipop_buf[70], ipop_buf[71], ipop_buf[72], ipop_buf[73]);
-            if (ipop_buf[70] == 0x1f && ipop_buf[71] == 0x0d && ipop_buf[72] == 0x49 && ipop_buf[73] == 0x24) {
+            //if (ipop_buf[70] == 0x1f && ipop_buf[71] == 0x0d && ipop_buf[72] == 0x49 && ipop_buf[73] == 0x24) {
+            //if (ipop_buf[70] == 0x1f && ipop_buf[71] == 0x0d && ipop_buf[72] == 0x49 && ipop_buf[73] == 0x7) {
+            //if (ipop_buf[70] == 0x42 && ipop_buf[71] == 0xdc && ipop_buf[72] == 0x9c && ipop_buf[73] == 0x44) {
+            if (ipop_buf[70] == 0x1f && ipop_buf[71] == 0x0d && ipop_buf[72] == 0x49) {
               rcount -= BUF_OFFSET;
               if (write(tap, buf, rcount) < 0) {
                 fprintf(stderr, "writing fail\n");
               }
-              break;
+              continue;
             }
             // FOR GNID
         }
