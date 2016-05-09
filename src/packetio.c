@@ -327,6 +327,29 @@ ipop_recv_thread(void *data)
             continue;
         }
 
+        /*
+        if (is_arp_broadcast(ipop_buf)) {
+            create_arp_request_sw(buf, (unsigned char *) opts->mac, 
+                                       (unsigned char *) opts->my_ip4);
+            reset_id_table();
+            while( !is_id_table_end() ) {
+                if ( is_id_exist() )  {
+                    // TODO It may be better to retrieve the iterator rather
+                    //   than key string itself.  
+                    peer = retrieve_peer();
+                    set_headers(ipop_buf, peerlist_local.id, peer->id);
+                    if (opts->send_func != NULL) {
+                        if (opts->send_func((const char*)ipop_buf, ncount) < 0) {
+                           fprintf(stderr, "send_func failed\n");
+                        }
+                    }
+                }
+                increase_id_table_itr();
+            }
+            continue;
+        }
+        */
+
         // update packet size to remove 40-byte header size, this is
         // important to have correct size when writing packet to VNIC
         rcount -= BUF_OFFSET;

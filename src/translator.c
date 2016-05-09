@@ -257,6 +257,30 @@ create_arp_response(unsigned char *buf)
     return -1;
 }
 
+/*
+int
+create_arp_request_sw(unsigned char *buf, unsigned char *mac, unsigned char *my_ip4)
+{
+    memset(buf, 0xFF, 6); // Broadcast
+    memcpy(buf+6, mac, 6); // My MAC
+    buf[12]=0x08; // EThertype
+    buf[13]=0x06;
+    buf[14]=0x00; // HW Type
+    buf[15]=0x01; 
+    buf[16]=0x08; // Protocol type
+    buf[17]=0x00; 
+    buf[18]=0x06; // HW addr  length
+    buf[19]=0x04; // Protocol addr length
+    buf[20]=0x00; // operation (request)
+    buf[21]=0x01; 
+    memcpy(buf + 22, mac, 6);
+    memcpy(buf + 28, my_ip4, 4);
+    memset(buf+32, 0x00, 6); // Broadcast
+    memset(buf+38, 0x00, 4); // Broadcast
+    return 0;
+}
+*/
+
 int
 create_arp_response_sw(unsigned char *buf, unsigned char *mac, unsigned char *my_ip4)
 {
@@ -310,3 +334,12 @@ is_icc(const unsigned char *buf)
   return buf[40] == 0x00 && buf[41] == 0x69 && buf[42] == 0x70 &&
          buf[43] == 0x6f && buf[44] == 0x70;
 }
+
+/*
+int
+is_arp_broadcast(const unsigned char *buf)
+{
+  return buf[40] == 0x00 && buf[41] == 0x69 && buf[42] == 0x70 &&
+         buf[43] == 0x6f && buf[44] == 0x71;
+}
+*/
