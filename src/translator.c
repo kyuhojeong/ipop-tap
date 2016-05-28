@@ -275,7 +275,8 @@ is_nonunicast(const unsigned char * buf)
 {
   return ((buf[0] == 0xff && buf[1] == 0xff && buf[2] == 0xff &&
           buf[3] == 0xff && buf[4] == 0xff && buf[5] == 0xff) ||
-          (buf[0] == 0x01 && buf[1] == 0x00 && buf[2] == 0x5e));
+          (buf[0] == 0x01 && buf[1] == 0x00 && buf[2] == 0x5e &&
+          ((buf[3] >> 7) == 0x00)));
 }
 
 int

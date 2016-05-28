@@ -55,6 +55,7 @@ typedef struct thread_opts {
     const char *local_ip6;
     int (*send_func)(const char *buf, size_t len);
     int (*recv_func)(char *buf, size_t len);
+    int overlay_multicast;
 } thread_opts_t;
 
 #endif

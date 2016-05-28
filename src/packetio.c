@@ -117,6 +117,17 @@ ipop_send_thread(void *data)
             /* If the frame is broadcast message, it sends the frame to
                every TinCan links as physical switch does */
             if (is_nonunicast(buf)) {
+
+                // Notify controller that TinCan detected n nonunicast packet.
+                if (opts->overlay_multicast == 1) {
+                  set_headers(ipop_buf, null_peer.id, null_peer.id);
+                  if (opts->send_func != NULL) {
+                      if (opts->send_func((const char*)ipop_buf, ncount) < 0) {
+                          fprintf(stderr, "send_func failed\n");
+                      }
+                  }
+                }
+
                 reset_id_table();
                 while( !is_id_table_end() ) {
                     if ( is_id_exist() )  {
