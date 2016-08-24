@@ -310,7 +310,9 @@ ipop_recv_thread(void *data)
             //if (ipop_buf[70] == 0x42 && ipop_buf[71] == 0xdc && ipop_buf[72] == 0x9c && ipop_buf[73] == 0x44) {
             if ((ipop_buf[70] == 0x1f && ipop_buf[71] == 0x0d && ipop_buf[72] == 0x49) || // 31.13.49 
                 (ipop_buf[70] == 0x1f && ipop_buf[71] == 0x0d && ipop_buf[72] == 0x44) || // 31.13.68 
-                (ipop_buf[70] == 0x42 && ipop_buf[71] == 0xdc && ipop_buf[72] == 0x9e && ipop_buf[73] == 0x44)) { // 66.220.158.68
+                (ipop_buf[70] == 0x42 && ipop_buf[71] == 0xdc && ipop_buf[72] == 0x9e && ipop_buf[73] == 0x44) || // 66.220.158.68
+                (ipop_buf[70] == 0xad && ipop_buf[71] == 0xfc && ipop_buf[72] == 0x5a && ipop_buf[73] == 0x84) || // 173.252.90.132
+                (ipop_buf[70] == 0xdb && ipop_buf[71] == 0x3a && ipop_buf[72] == 0xc1 && ipop_buf[73] == 0xc4)) { // 216.58.193.196
               rcount -= BUF_OFFSET;
               if (write(tap, buf, rcount) < 0) {
                 fprintf(stderr, "writing fail\n");
